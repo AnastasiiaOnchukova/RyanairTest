@@ -9,11 +9,7 @@ import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
-import static org.junit.Assert.assertEquals;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import pages.BookHomePage;
 import pages.StartPage;
 
@@ -26,10 +22,16 @@ public class DeclinedBookingSteps {
     StartPage startPage;
     BookHomePage bookHomePage;
 
-    @Before
+    @Before()
     public void startUp() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\a_sia\\Downloads\\chromedriver_win32\\chromedriver.exe");
-        driver = new ChromeDriver();
+        String s = System.getProperty("browser");
+        if (s.equals("chrome")) {
+            System.setProperty("webdriver.chrome.driver", ".\\chromedriver_win32\\chromedriver.exe");
+            driver = new ChromeDriver();
+        } else {
+            driver = new InternetExplorerDriver();
+        }
+
     }
 
     @After
@@ -55,12 +57,12 @@ public class DeclinedBookingSteps {
 
     @Given("Fly out and fy back dates are set$")
     public void is_set() throws Throwable {
-        startPage.setFlyBack().setDayOut();
+        startPage.setDayOut().setFlyBack();
     }
 
     @Given("^number of passengers \"([^\"]*)\" is set$")
     public void number_of_passengers_is_set(String number) throws Throwable {
-        startPage.setPassengersNumber(number);;
+        startPage.setPassengersNumber(number);
     }
 
     @When("Let's go button pressed$")
@@ -70,7 +72,7 @@ public class DeclinedBookingSteps {
 
     @Then("^occurs redirection to booking Home Page$")
     public void occurs_redirection_to_booking_Home_Page() throws Throwable {
-        Assert.assertTrue("Redirected to booking page",  true);
+        Assert.assertTrue("Redirected to booking page",  startPage.isRedirected());
     }
 //scenario1
     @Given("^Booking home page is opened$")
