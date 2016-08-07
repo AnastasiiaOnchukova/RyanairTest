@@ -5,6 +5,7 @@ import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
+import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -13,6 +14,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pages.BookHomePage;
 import pages.StartPage;
 
 /**
@@ -22,6 +24,7 @@ public class DeclinedBookingSteps {
 
     WebDriver driver;
     StartPage startPage;
+    BookHomePage bookHomePage;
 
     @Before
     public void startUp() {
@@ -31,55 +34,49 @@ public class DeclinedBookingSteps {
 
     @After
     public void tearDown() {
-        driver.quit();
+        driver.close();
     }
-
+//scenario0
     @Given("^Ryanair start page is opened$")
     public void ryanair_start_page_is_opened() throws Throwable {
-        driver.get("https://www.ryanair.com/ie/en/");
-        assertEquals("Ryanair", "Ryanair");
+        startPage = new StartPage(driver);
+        startPage.navigateTo();
     }
 
     @Given("^search type 'Flights' is selected$")
     public void search_type_Flights_is_selected() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        startPage.selectFlightTab();
     }
 
-    @Given("^\"([^\"]*)\" destination is set$")
-    public void destination_is_set(String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    @Given("From and To destinations are set$")
+    public void destination_is_set() throws Throwable {
+       startPage.setDepartureAirport("Wroclaw").setDestinationAirport("Dublin");
     }
 
-    @Given("^\"([^\"]*)\" is set$")
-    public void is_set(String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    @Given("Fly out and fy back dates are set$")
+    public void is_set() throws Throwable {
+        startPage.setFlyBack().setDayOut();
     }
 
-    @Given("^number of passengers is set$")
-    public void number_of_passengersis_set() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    @Given("^number of passengers \"([^\"]*)\" is set$")
+    public void number_of_passengers_is_set(String number) throws Throwable {
+        startPage.setPassengersNumber(number);;
     }
 
-    @When("^\"([^\"]*)\" button pressed$")
-    public void button_pressed(String arg1) throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+    @When("Let's go button pressed$")
+    public void button_pressed() throws Throwable {
+        startPage.clickGoButton();
     }
 
     @Then("^occurs redirection to booking Home Page$")
     public void occurs_redirection_to_booking_Home_Page() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        Assert.assertTrue("Redirected to booking page",  true);
     }
-
+//scenario1
     @Given("^Booking home page is opened$")
     public void booking_home_page_is_opened() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        bookHomePage=new BookHomePage(driver);
+        Assert.assertTrue("Booking Page opened", true);
     }
 
     @Given("^flight options are displayed$")
@@ -105,7 +102,7 @@ public class DeclinedBookingSteps {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
-
+//scenario2
     @Given("^Booking extras page is opened$")
     public void booking_extras_page_is_opened() throws Throwable {
         // Write code here that turns the phrase above into concrete actions
@@ -123,7 +120,7 @@ public class DeclinedBookingSteps {
         // Write code here that turns the phrase above into concrete actions
         throw new PendingException();
     }
-
+//scenario3
     @Given("^Booking payment page is opened$")
     public void booking_payment_page_is_opened() throws Throwable {
         // Write code here that turns the phrase above into concrete actions

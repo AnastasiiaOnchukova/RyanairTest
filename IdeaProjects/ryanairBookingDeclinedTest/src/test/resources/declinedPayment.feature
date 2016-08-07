@@ -3,12 +3,10 @@ Feature: Declined Booking
   Scenario: Specify booking details
     Given Ryanair start page is opened
     And search type 'Flights' is selected
-    And "from" destination is set
-    And "to" destination is set
-    And "fly out" is set
-    And "fly back" is set
-    And number of passengers is set
-    When "Let's go!" button pressed
+    And From and To destinations are set
+    And Fly out and fy back dates are set
+    And number of passengers "2" is set
+    When Let's go button pressed
     Then occurs redirection to booking Home Page
 
 #  Scenario: Select flights
