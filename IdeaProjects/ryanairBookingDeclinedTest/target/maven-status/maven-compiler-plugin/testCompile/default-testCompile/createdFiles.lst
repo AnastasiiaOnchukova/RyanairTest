@@ -1,0 +1,7 @@
+pages\BookExtrasPage.class
+pages\UtilClass.class
+pages\BookHomePage.class
+DeclinedBookingSteps.class
+pages\BookPaymentPage.class
+TestRunner.class
+pages\StartPage.class
