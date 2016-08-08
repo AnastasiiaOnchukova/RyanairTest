@@ -1,5 +1,6 @@
 package pages;
 
+import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -9,7 +10,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Created by a_sia on 8/6/2016.
  */
-public class StartPage extends BasePage {
+public class StartPage {
+    private static WebDriver driver;
+    private final By byPageName=By.xpath("//article[@id='home']");
     private final By byTabFlights=By.className("flights");
     private final By byDepartureAirport = By.xpath("//input[@placeholder='Departure airport']");
     private final By byDestinationAirport=By.xpath("//input[@placeholder='Destination airport']");
@@ -23,17 +26,24 @@ public class StartPage extends BasePage {
     private final By byAdults=By.xpath("//input[@aria-label='Adults 16+ years']");
     private final By byGoButton=By.xpath("//div[@class='col-flight-search-right']//button[@aria-hidden='false']");
     private final By byBookingHomePage=By.xpath("//total-header//section[@id='booking-selection']");
+    private final String bookingHome="/booking/home";
 
 
     public StartPage(WebDriver driver) {
-        super(driver);
+        super();
+        this.driver=driver;
     }
 
+    public StartPage navigateTo() {
+        boolean isHomePage=driver.findElement(byPageName).isDisplayed();
+        Assert.assertTrue("Home Page was not opened",isHomePage);
+        return this;
+    }
     public StartPage selectFlightTab() {
         WebElement flights = driver.findElement(byTabFlights);
         flights.click();
 
-        return new StartPage(driver);
+        return this;
     }
 
     public StartPage setDepartureAirport(String departureAirport) {
@@ -56,28 +66,27 @@ public class StartPage extends BasePage {
         WebElement passengersField = driver.findElement(byPassengers);
         passengersField.click();
 
-        waitForVisibility(byAdults);
+        UtilClass.waitForVisibility(byAdults,driver);
 
         WebElement dropDownSelect = driver.findElement(byAdults);
         dropDownSelect.clear();
         dropDownSelect.sendKeys(number);
 
-        return new StartPage(driver);
+        return this;
     }
 
-    public  StartPage  clickGoButton(){
-        waitForVisibility(byGoButton);
+    public  BookHomePage  clickGoButton(){
+        UtilClass.waitForVisibility(byGoButton,driver);
 
         WebElement goButton = driver.findElement(byGoButton);
         goButton.click();
+        UtilClass.waitForVisibility(byBookingHomePage,driver);
 
-        return new StartPage(driver);
+        return new BookHomePage(driver);
     }
 
     public boolean isRedirected() {
-        waitForVisibility(byBookingHomePage);
-        return driver.findElement(byBookingHomePage).isDisplayed();
-
+        return UtilClass.isRedirected(bookingHome,driver);
     }
 
     private StartPage setAirport(By locator, String city){
@@ -86,14 +95,14 @@ public class StartPage extends BasePage {
         String locatorEnter = Keys.chord(city, Keys.ENTER);
         to.sendKeys(locatorEnter);
 
-        return new StartPage(driver);
+        return this;
     }
 
     private StartPage setDate(By dateDay, By dateMonth, By dateYear){
-        waitForVisibility(dateDay);
+        UtilClass.waitForVisibility(dateDay,driver);
 
         WebElement dayOutD = driver.findElement(dateDay);
-        dayOutD.sendKeys("21");
+        dayOutD.sendKeys("28");
 
         WebElement dayOutM = driver.findElement(dateMonth);
         dayOutM.sendKeys("08");
@@ -101,6 +110,7 @@ public class StartPage extends BasePage {
         WebElement dayOutY =driver.findElement(dateYear);
         dayOutY.sendKeys("16");
 
-        return new StartPage(driver);
+        return this;
     }
+
 }

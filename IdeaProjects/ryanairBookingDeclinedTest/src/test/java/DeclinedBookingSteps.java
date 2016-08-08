@@ -6,6 +6,7 @@ import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -17,27 +18,27 @@ import pages.StartPage;
  * Created by a_sia on 8/6/2016.
  */
 public class DeclinedBookingSteps {
-
     WebDriver driver;
     StartPage startPage;
     BookHomePage bookHomePage;
 
-    @Before()
+    @Before("@start")
     public void startUp() {
         String s = System.getProperty("browser");
         if (s.equals("chrome")) {
             System.setProperty("webdriver.chrome.driver", ".\\chromedriver_win32\\chromedriver.exe");
             driver = new ChromeDriver();
+            driver.get("https://www.ryanair.com/ie/en/");
         } else {
             driver = new InternetExplorerDriver();
         }
 
     }
-
-    @After
+    @After("@stop")
     public void tearDown() {
         driver.close();
     }
+
 //scenario0
     @Given("^Ryanair start page is opened$")
     public void ryanair_start_page_is_opened() throws Throwable {
@@ -67,30 +68,28 @@ public class DeclinedBookingSteps {
 
     @When("Let's go button pressed$")
     public void button_pressed() throws Throwable {
-        startPage.clickGoButton();
+        bookHomePage=new BookHomePage(driver);
+        bookHomePage=startPage.clickGoButton();
     }
 
     @Then("^occurs redirection to booking Home Page$")
     public void occurs_redirection_to_booking_Home_Page() throws Throwable {
-        Assert.assertTrue("Redirected to booking page",  startPage.isRedirected());
+        Assert.assertTrue("Not redirected to booking page",  startPage.isRedirected());
     }
 //scenario1
     @Given("^Booking home page is opened$")
     public void booking_home_page_is_opened() throws Throwable {
-        bookHomePage=new BookHomePage(driver);
         Assert.assertTrue("Booking Page opened", true);
-    }
-
-    @Given("^flight options are displayed$")
-    public void flight_options_are_displayed() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
     }
 
     @When("^select return flights$")
     public void select_return_flights() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        bookHomePage.selectOutboundFlight().selectInboundFlight();
+    }
+
+    @When("^Continue button pressed$")
+    public void continue_button_pressed() throws Throwable {
+        bookHomePage.clickContinue();
     }
 
     @When("^popup disabled$")
@@ -101,8 +100,7 @@ public class DeclinedBookingSteps {
 
     @Then("^occurs redirection to booking Extras Page$")
     public void occurs_redirection_to_booking_Extras_Page() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
-        throw new PendingException();
+        Assert.assertTrue("Not redirected to booking extras page",  bookHomePage.isRedirected());
     }
 //scenario2
     @Given("^Booking extras page is opened$")

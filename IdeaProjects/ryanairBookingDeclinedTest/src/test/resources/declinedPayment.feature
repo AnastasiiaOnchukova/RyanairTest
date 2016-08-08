@@ -1,5 +1,7 @@
+@feature
 Feature: Declined Booking
 
+  @start
   Scenario: Specify booking details
     Given Ryanair start page is opened
     And search type 'Flights' is selected
@@ -9,20 +11,21 @@ Feature: Declined Booking
     When Let's go button pressed
     Then occurs redirection to booking Home Page
 
-#  Scenario: Select flights
-#    Given Booking home page is opened
-#    And flight options are displayed
+
+  Scenario: Select flights
+    Given Booking home page is opened
 #    When select return flights
-#    And "Continue" button pressed
+#    When Continue button pressed
 #    And popup disabled
 #    Then occurs redirection to booking Extras Page
-#
+
 #  Scenario: Select journey extras
 #    Given Booking extras page is opened
 #    And "Check out" button is enabled
 #    When "Check out" button pressed
 #    Then occurs redirection to booking Payment Page
 #
+#    @stop
 #  Scenario: Pay for flight
 #    Given Booking payment page is opened
 #    And total to pay is displayed
